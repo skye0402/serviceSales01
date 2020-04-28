@@ -1,0 +1,88 @@
+ID: serviceSales01
+_schema-version: "2.1"
+description: Service Sales
+version: 0.0.1
+modules:
+  - name: serviceSales01-db
+    type: hdb
+    path: db
+    parameters:
+      memory: 64M
+      disk-quota: 64M
+    requires:
+      - name: serviceSales01-db-hdi-container
+  - name: serviceSales01-srv
+    type: nodejs
+    path: srv
+    parameters:
+      memory: 64M
+      disk-quota: 32M
+    provides:
+      - name: srv_api
+        properties:
+          url: ${default-url}
+    requires:
+      - name: serviceSales01-db-hdi-container
+      - name: serviceSales01-uaa
+
+  - name: launchpadSite-serviceSales01
+    type: siteentry
+    path: launchpadSite
+    parameters:
+       memory: 64M
+    requires:
+     - name: sap-portal-services-host-serviceSales01
+     - name: portal-uaa-serviceSales01
+     - name: sapui5-provider
+
+
+  - name: launchpadSite-Content-serviceSales01
+    type: sitecontent
+    path: launchpadSite-Content
+    parameters:
+       memory: 32M
+    requires:
+     - name: sap-portal-services-client-serviceSales01
+     - name: portal-uaa-serviceSales01
+
+resources:
+  - name: serviceSales01-db-hdi-container
+    type: com.sap.xs.hdi-container
+    properties:
+      hdi-container-name: ${service-name}
+  - name: serviceSales01-uaa
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service-plan: default
+      service: xsuaa
+      config:
+        xsappname: serviceSales01
+        tenant-mode: dedicated
+
+  - name: sap-portal-services-host-serviceSales01
+    parameters:
+       config:
+          siteId: serviceSales01
+    type: com.sap.portal.site-host
+
+
+  - name: portal-uaa-serviceSales01
+    parameters:
+       service-plan: space
+    type: com.sap.xs.uaa
+
+
+  - name: sapui5-provider
+    type: com.sap.xs.ui5
+    description: UI5 as a service from HANA XSA
+    parameters:
+      service-plan: sapui5-1.60
+      service: sapui5_sb
+
+
+  - name: sap-portal-services-client-serviceSales01
+    parameters:
+       config:
+          siteId: serviceSales01
+    type: com.sap.portal.site-content
+

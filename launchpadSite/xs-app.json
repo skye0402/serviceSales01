@@ -1,0 +1,18 @@
+{
+	"routes": [{
+		"source": "/(.*)",
+		"localDir": "resources",
+		"cacheControl": "public, max-age=1000,must-revalidate",
+		"authenticationType": "xsuaa",
+		"replace": {
+			"pathSuffixes": [
+				"index.html"
+			],
+			"services": {
+				"sapui5_sb": {
+					"tag": "ui5"
+				}
+			}
+		}
+	}]
+}
