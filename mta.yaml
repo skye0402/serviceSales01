@@ -45,6 +45,15 @@ modules:
      - name: sap-portal-services-client-serviceSales01
      - name: portal-uaa-serviceSales01
 
+
+  - name: odataServiceNorthwind
+    type: nodejs
+    path: odataServiceNorthwind
+    provides:
+     - name: odataServiceNorthwind_api
+       properties:
+          url: ${default-url}
+
 resources:
   - name: serviceSales01-db-hdi-container
     type: com.sap.xs.hdi-container
