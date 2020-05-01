@@ -54,6 +54,15 @@ modules:
        properties:
           url: ${default-url}
 
+
+  - name: httpsRedirectService
+    type: nodejs
+    path: httpsRedirectService
+    provides:
+     - name: httpsRedirectService_api
+       properties:
+          url: ${default-url}
+
 resources:
   - name: serviceSales01-db-hdi-container
     type: com.sap.xs.hdi-container
